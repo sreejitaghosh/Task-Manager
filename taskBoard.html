@@ -46,7 +46,7 @@
       {% for value in Value_data %}
         <tr>
           <td>
-            <a href="/invite?taskBoarddata= {{ value.taskBoarddata }}&email = {{ value.owner }}">
+            <a href="/invite?taskBoarddata={{ value.taskBoarddata }}&email={{ value.owner }}">
               Task Board Name : {{ value.taskBoarddata }}
               <br>
             </a>

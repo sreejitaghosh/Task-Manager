@@ -41,19 +41,21 @@
       <div class="nav">
       </div>
       {% endif %}
-      <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
-      <p>List Of Task Board</p>
-      {% for value in Value_data %}
+      <form method='post' action='/invite?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}'>
+        <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
+        <p>Invite User</p>
+        <select name="select_email_id">
+          <option value="">Select</option>
+          {% for value in available_email_id %}
+            <option value="{{ value.email_address }}">{{ value.email_address }}</option>
+          {% endfor %}
+        </select>
         <tr>
-          <td>
-            <a href="">
-              Task Board Name : {{ value.taskBoarddata }}
-              <br>
-            </a>
-          </td>
+          <td><input type="submit" value="Invite" id="inviteButton" name="Invite"></td>
+          <td><input type="reset" value="Reset" id="reset" name="Reset"></td>
         </tr>
-      {% endfor %}
-      <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
+        <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
+      </form>
       <a href="/"><u>BACK</u></a><br>
       <p>you can {{ url_string }} <a href='{{ url }}'>here</a></p>
     </div>

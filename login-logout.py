@@ -9,6 +9,7 @@ from taskBoarddata import taskBoarddata
 from taskBoard import taskBoard
 from addTask import addTask
 from addTaskBoard import addTaskBoard
+from invite import invite
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -56,5 +57,6 @@ app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/taskBoard', taskBoard),
     ('/addTask', addTask),
-    ('/addTaskBoard', addTaskBoard)
+    ('/addTaskBoard', addTaskBoard),
+    ('/invite', invite)
 ], debug=True)
