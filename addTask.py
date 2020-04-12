@@ -5,19 +5,22 @@ from google.appengine.ext import ndb
 import os
 from user import MyUser
 
+
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True
 )
 
-class task(webapp2.RequestHandler):
+class addTask(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/html'
 
         url_string = ''
         url = ''
         taskBoard = ''
+        addTask = ''
+        addTaskBoard = ''
         user = users.get_current_user()
 
         if user:
@@ -40,9 +43,9 @@ class task(webapp2.RequestHandler):
              'user' : user
         }
 
-        template = JINJA_ENVIRONMENT.get_template('task.html')
+        template = JINJA_ENVIRONMENT.get_template('addTask.html')
         self.response.write(template.render(template_values))
 
 app = webapp2.WSGIApplication([
-    ('taskBoard', task)
+    ('/addTask', addTask)
 ], debug=True)

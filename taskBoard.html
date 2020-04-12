@@ -13,9 +13,9 @@
     width: 100%;
     display: inline-block;
     color: red;
-    text-decoration: Arial;
     text-align: center;
     padding: 17px 19px;
+    text-decoration: Arial;
     font-size: 20px;
     font-style: Bold;
     border-top: 1px solid;
@@ -33,17 +33,28 @@
       {% if user %}
       <p>Welcome {{ welcome }} {{ user.email() }}</p>
       <div class="nav">
-        <a href="/taskBoard"><u>TASKS BOARD</u></a>
+        <a href="/addTask"><u>ADD TASK</u></a>
         <br>
-        <a href="/addTaskBoard"><u>ADD TASK BOARD</u></a>
       </div>
       {% else %}
       <p>Welcome to the application </p>
       <div class="nav">
       </div>
       {% endif %}
-      <a href="/"><u>BACK</u></a>
-      <br>
+      <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
+      <p>List Of Task Board</p>
+      {% for value in Value_data %}
+        <tr>
+          <td>
+            <a href="/invite?taskBoarddata= {{ value.taskBoarddata }}&email = {{ value.owner }}">
+              Task Board Name : {{ value.taskBoarddata }}
+              <br>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+      <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
+      <a href="/"><u>BACK</u></a><br>
       <p>you can {{ url_string }} <a href='{{ url }}'>here</a></p>
     </div>
   </center>

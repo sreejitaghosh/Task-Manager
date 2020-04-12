@@ -4,11 +4,9 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 import os
 from user import MyUser
-from taskdata import taskdata
 from taskBoarddata import taskBoarddata
-from taskBoard import taskBoard
-from addTask import addTask
 from addTaskBoard import addTaskBoard
+
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -16,18 +14,16 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True
 )
 
-class MainPage(webapp2.RequestHandler):
+class taskBoard(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/html'
 
         url_string = ''
         url = ''
         taskBoard = ''
-        addTask = ''
-        addTaskBoard = ''
-
-
+        add = ''
         user = users.get_current_user()
+        data = []
 
         if user:
             url = users.create_logout_url(self.request.uri)
@@ -43,18 +39,23 @@ class MainPage(webapp2.RequestHandler):
             url = users.create_login_url(self.request.uri)
             url_string = 'login'
 
+        all_values = myuser.taskboard
+        i = 0
+        while i < len(all_values):
+            taskboard_NameValue = ndb.Key('taskBoarddata', all_values[i]).get()
+            data.append(taskboard_NameValue)
+            i = i + 1
+
         template_values = {
              'url' : url,
              'url_string' : url_string,
-             'user' : user
+             'user' : user,
+             'Value_data' : data
         }
 
-        template = JINJA_ENVIRONMENT.get_template('login-logout.html')
+        template = JINJA_ENVIRONMENT.get_template('taskBoard.html')
         self.response.write(template.render(template_values))
 
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
-    ('/taskBoard', taskBoard),
-    ('/addTask', addTask),
-    ('/addTaskBoard', addTaskBoard)
+    ('/taskBoard', taskBoard)
 ], debug=True)
