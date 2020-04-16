@@ -26,10 +26,10 @@ class addTaskBoard(webapp2.RequestHandler):
         if user:
             url = users.create_logout_url(self.request.uri)
             url_string = 'logout'
-            myuser_details = ndb.Key('MyUser', user.user_id())
+            myuser_details = ndb.Key('MyUser', user.email())
             myuser = myuser_details.get()
             if myuser == None:
-                myuser = MyUser(id=user.user_id())
+                myuser = MyUser(id=user.email())
                 myuser.email_address = user.email()
                 welcome = 'Welcome to the application'
                 myuser.put()
@@ -57,10 +57,10 @@ class addTaskBoard(webapp2.RequestHandler):
         if user:
             url = users.create_logout_url(self.request.uri)
             url_string = 'logout'
-            myuser_details = ndb.Key('MyUser', user.user_id())
+            myuser_details = ndb.Key('MyUser', user.email())
             myuser = myuser_details.get()
             if myuser == None:
-                myuser = MyUser(id=user.user_id())
+                myuser = MyUser(id=user.email())
                 myuser.email_address = user.email()
                 welcome = 'Welcome to the application'
                 myuser.put()
@@ -71,7 +71,7 @@ class addTaskBoard(webapp2.RequestHandler):
 
         TaskBoardNameFromUser = self.request.get('TaskBoardName')
         Unique = TaskBoardNameFromUser+""+user.email()
-        data = ndb.Key('MyUser', user.user_id()).get()
+        data = ndb.Key('MyUser', user.email()).get()
 
         element = data.taskboard
         in_List = False
@@ -89,11 +89,12 @@ class addTaskBoard(webapp2.RequestHandler):
         else:
             add_data = taskBoarddata(id=Unique)
             add_data.owner = user.email()
+            add_data.email_address.append(user.email())
             add_data.taskBoarddata = TaskBoardNameFromUser
             add_data.put()
             data.taskboard.append(Unique)
             data.put()
-            self.redirect('/')
+            self.redirect('/taskBoard')
 
         template_values = {
             'url' : url,

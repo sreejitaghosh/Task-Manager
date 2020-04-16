@@ -53,9 +53,9 @@
       {% endif %}
       <form method='post' action='/invite?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}'>
         <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
-        <p>Invite User</p>
-        <p>Task Board: {{taskboard_data.taskBoarddata}}</p>
-        <p>Email Id: {{taskboard_data.owner}}</p>
+        <p>You can Invite User by selecting from available list of email ids</p>
+        <p>Task Board Name : {{taskboard_data.taskBoarddata}}</p>
+        <p>TaskBoard Created By : {{taskboard_data.owner}}</p>
         <select name="select_email_id">
           <option value="">Select</option>
           {% for value in available_email_id %}
@@ -63,7 +63,7 @@
           {% endfor %}
         </select>
         <tr>
-          <td><input type="submit" value="Invite" id="inviteButton" name="Invite"></td>
+          <td><input type="submit" value="Invite" id="inviteButton" name="submit"></td>
           <td><input type="reset" value="Reset" id="reset" name="Reset"></td>
         </tr>
         <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>

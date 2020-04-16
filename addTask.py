@@ -27,10 +27,10 @@ class addTask(webapp2.RequestHandler):
         if user:
             url = users.create_logout_url(self.request.uri)
             url_string = 'logout'
-            myuser_details = ndb.Key('MyUser', user.user_id())
+            myuser_details = ndb.Key('MyUser', user.email())
             myuser = myuser_details.get()
             if myuser == None:
-                myuser = MyUser(id=user.user_id())
+                myuser = MyUser(id=user.email())
                 myuser.email_address = user.email()
                 welcome = 'Welcome to the application'
                 myuser.put()
@@ -63,10 +63,10 @@ class addTask(webapp2.RequestHandler):
         if user:
             url = users.create_logout_url(self.request.uri)
             url_string = 'logout'
-            myuser_details = ndb.Key('MyUser', user.user_id())
+            myuser_details = ndb.Key('MyUser', user.email())
             myuser = myuser_details.get()
             if myuser == None:
-                myuser = MyUser(id=user.user_id())
+                myuser = MyUser(id=user.email())
                 myuser.email_address = user.email()
                 welcome = 'Welcome to the application'
                 myuser.put()
@@ -85,7 +85,7 @@ class addTask(webapp2.RequestHandler):
         in_List = False
 
         data = ndb.Key('taskBoarddata',Unique).get()
-        TaskData = ndb.Key('taskdata', TaskBoardName).get()
+        TaskData = ndb.Key('taskdata',Unique).get()
         if TaskData != None:
             element = TaskData.Title
 
@@ -102,7 +102,7 @@ class addTask(webapp2.RequestHandler):
             self.redirect('/')
         else:
             if len(element) == 0:
-                add_data = taskdata(id=TaskBoardName)
+                add_data = taskdata(id=Unique)
                 add_data.Title.append(TaskNameFromUser)
                 add_data.Due_Date.append(Due_Date)
                 add_data.Task_Completion.append("Not Complete")
@@ -112,7 +112,7 @@ class addTask(webapp2.RequestHandler):
                 add_data.put()
                 self.redirect('/taskBoard')
             else:
-                add_data = ndb.Key('taskdata', TaskBoardName).get()
+                add_data = ndb.Key('taskdata',Unique).get()
                 add_data.Title.append(TaskNameFromUser)
                 add_data.Due_Date.append(Due_Date)
                 add_data.Task_Completion.append("Not Complete")

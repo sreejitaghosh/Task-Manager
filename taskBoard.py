@@ -25,15 +25,15 @@ class taskBoard(webapp2.RequestHandler):
         user = users.get_current_user()
         data = []
         all_values = []
-        
+
         if user:
             url = users.create_logout_url(self.request.uri)
             url_string = 'logout'
-            myuser_details = ndb.Key('MyUser', user.user_id())
+            myuser_details = ndb.Key('MyUser', user.email())
             myuser = myuser_details.get()
             all_values = myuser.taskboard
             if myuser == None:
-                myuser = MyUser(id=user.user_id())
+                myuser = MyUser(id=user.email())
                 myuser.email_address = user.email()
                 welcome = 'Welcome to the application'
                 myuser.put()

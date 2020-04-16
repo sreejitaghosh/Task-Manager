@@ -30,10 +30,10 @@ class invite(webapp2.RequestHandler):
         if user:
             url = users.create_logout_url(self.request.uri)
             url_string = 'logout'
-            myuser_details = ndb.Key('MyUser', user.user_id())
+            myuser_details = ndb.Key('MyUser', user.email())
             myuser = myuser_details.get()
             if myuser == None:
-                myuser = MyUser(id=user.user_id())
+                myuser = MyUser(id=user.email())
                 myuser.email_address = user.email()
                 welcome = 'Welcome to the application'
                 myuser.put()
@@ -67,10 +67,10 @@ class invite(webapp2.RequestHandler):
         if user:
             url = users.create_logout_url(self.request.uri)
             url_string = 'logout'
-            myuser_details = ndb.Key('MyUser', user.user_id())
+            myuser_details = ndb.Key('MyUser', user.email())
             myuser = myuser_details.get()
             if myuser == None:
-                myuser = MyUser(id=user.user_id())
+                myuser = MyUser(id=user.email())
                 myuser.email_address = user.email()
                 welcome = 'Welcome to the application'
                 myuser.put()
@@ -83,34 +83,35 @@ class invite(webapp2.RequestHandler):
         call_user = self.request.get('email')
         all_call = call_tb+""+call_user
         user_select_email = self.request.get('select_email_id')
-        new_myuser = MyUser.query()
-        new_myuser = new_myuser.filter(MyUser.email_address == user_select_email).get()
-        if new_myuser != None:
-            call = new_myuser.taskboard
-            self.response.write(call)
+        taskBoard_a = ndb.Key('taskBoarddata',all_call).get()
+        if taskBoard_a.owner == user.email():
+            section = False
+            new_myuser = ndb.Key('MyUser',user_select_email).get()
 
+            if new_myuser != None:
+                call = new_myuser.taskboard
+                i = 0
+                while i < len(call):
+                    if call[i] == all_call:
+                        section = True
+                        break
+                    else:
+                        section = False
+                        i = i + 1
 
-        section = False
-        i = 0
-        while i < len(call):
-            if call[i] == all_call:
-                section = True
-                break
-            else:
-                section = False
-                i = i + 1
-
-        if section == True:
-            self.redirect('/')
-        else:
-            if all_call != None:
-                new_myuser.taskboard.append(all_call)
-                new_myuser.put()
-                taskBoard_a = ndb.Key('taskBoarddata',all_call).get()
-                taskBoard_a.email_address.append(user_select_email)
-                taskBoard_a.put()
-            else:
+            if section == True:
                 self.redirect('/')
+            else:
+                if all_call != None:
+                    new_myuser.taskboard.append(all_call)
+                    new_myuser.put()
+                    taskBoard_a.email_address.append(user_select_email)
+                    taskBoard_a.put()
+                    self.redirect('/taskBoard')
+                else:
+                    self.redirect('/')
+        else:
+            self.redirect('/')
 
         available_email_id = MyUser.query().fetch()
         taskboard_data = ndb.Key('taskBoarddata',all_call).get()
