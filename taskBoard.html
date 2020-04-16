@@ -33,8 +33,18 @@
       {% if user %}
       <p>Welcome {{ welcome }} {{ user.email() }}</p>
       <div class="nav">
-        <a href="/addTask"><u>ADD TASK</u></a>
+        <table>
+          <tr>
+            <td style="width:100px;">
+              <a href="/"><u>HOME</u></a>
+            </td>
+            <td>
+              <a href="/addTaskBoard"><u>ADD TASKBOARD</u></a>
+            </td>
+          </tr>
+        </table>
         <br>
+      <p>you can {{ url_string }} <a href='{{ url }}'>here</a></p>
       </div>
       {% else %}
       <p>Welcome to the application </p>
@@ -54,8 +64,6 @@
         </tr>
       {% endfor %}
       <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
-      <a href="/"><u>BACK</u></a><br>
-      <p>you can {{ url_string }} <a href='{{ url }}'>here</a></p>
     </div>
   </center>
 </body>

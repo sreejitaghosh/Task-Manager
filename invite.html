@@ -33,17 +33,29 @@
       {% if user %}
       <p>Welcome {{ welcome }} {{ user.email() }}</p>
       <div class="nav">
-        <a href="/addTask"><u>ADD TASK</u></a>
+        <table>
+          <tr>
+            <td style="width:100px;">
+              <a href="/"><u>HOME</u></a>
+            </td>
+            <td style="width:150px;">
+              <a href="/taskBoard"><u>TASKS BOARD</u></a>
+            </td>
+            <td>
+              <a href="/addTask?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}"><u>ADD TASK</u></a>
+            </td>
+        </table>
         <br>
+        <p>you can {{ url_string }} <a href='{{ url }}'>here</a></p>
       </div>
       {% else %}
       <p>Welcome to the application </p>
-      <div class="nav">
-      </div>
       {% endif %}
       <form method='post' action='/invite?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}'>
         <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
         <p>Invite User</p>
+        <p>Task Board: {{taskboard_data.taskBoarddata}}</p>
+        <p>Email Id: {{taskboard_data.owner}}</p>
         <select name="select_email_id">
           <option value="">Select</option>
           {% for value in available_email_id %}
@@ -56,8 +68,33 @@
         </tr>
         <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
       </form>
-      <a href="/"><u>BACK</u></a><br>
-      <p>you can {{ url_string }} <a href='{{ url }}'>here</a></p>
+      <p>List of Task</p>
+      <table>
+      {% for value in Value_task %}
+        <tr>
+          <td>
+            <a href="/invite?taskBoarddata={{ value.taskBoarddata }}&email={{ value.owner }}">
+              Task Name : {{ value.taskBoarddata }}
+              <br>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+      <tr>
+        <td style="width:150px"><u><b>Title</b></u></td>
+        <td style="width:150px"><u><b>Due Date</b></u></td>
+        <td style="width:150px"><u><b>Task Completed</b></u></td>
+        <td style="width:150px"><u><b>Task Assigned To</b></u></td>
+        <td style="width:150px"><u><b>Date</b></u></td>
+        <td style="width:150px"><u><b>Time</b></u></td>
+      </tr>
+      <tr><td><br></td></tr>
+      <tr>
+        <td><input type="submit" name="Button" value="Edit"></td>
+        <td><input type="submit" name="Button" value="Delete"></td>
+      </tr>
+    </table>
+    <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
     </div>
   </center>
 </body>

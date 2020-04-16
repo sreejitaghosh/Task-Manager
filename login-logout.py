@@ -27,7 +27,6 @@ class MainPage(webapp2.RequestHandler):
         addTask = ''
         addTaskBoard = ''
 
-
         user = users.get_current_user()
 
         if user:

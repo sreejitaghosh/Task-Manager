@@ -36,6 +36,7 @@ class addTaskBoard(webapp2.RequestHandler):
         else:
             url = users.create_login_url(self.request.uri)
             url_string = 'login'
+            self.redirect('/')
 
         template_values = {
              'url' : url,
@@ -66,6 +67,7 @@ class addTaskBoard(webapp2.RequestHandler):
         else:
             url = users.create_login_url(self.request.uri)
             url_string = 'login'
+            self.redirect('/')
 
         TaskBoardNameFromUser = self.request.get('TaskBoardName')
         Unique = TaskBoardNameFromUser+""+user.email()

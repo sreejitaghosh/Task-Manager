@@ -40,6 +40,7 @@ class invite(webapp2.RequestHandler):
         else:
             url = users.create_login_url(self.request.uri)
             url_string = 'login'
+            self.redirect('/')
 
         available_email_id = MyUser.query().fetch()
         taskboard_data = ndb.Key('taskBoarddata',taskBoard_key).get()
@@ -76,6 +77,7 @@ class invite(webapp2.RequestHandler):
         else:
             url = users.create_login_url(self.request.uri)
             url_string = 'login'
+            self.redirect('/')
 
         call_tb = self.request.get('taskBoarddata')
         call_user = self.request.get('email')
@@ -83,8 +85,10 @@ class invite(webapp2.RequestHandler):
         user_select_email = self.request.get('select_email_id')
         new_myuser = MyUser.query()
         new_myuser = new_myuser.filter(MyUser.email_address == user_select_email).get()
-        call = new_myuser.taskboard
-        self.response.write(call)
+        if new_myuser != None:
+            call = new_myuser.taskboard
+            self.response.write(call)
+
 
         section = False
         i = 0

@@ -24,12 +24,14 @@ class taskBoard(webapp2.RequestHandler):
         add = ''
         user = users.get_current_user()
         data = []
-
+        all_values = []
+        
         if user:
             url = users.create_logout_url(self.request.uri)
             url_string = 'logout'
             myuser_details = ndb.Key('MyUser', user.user_id())
             myuser = myuser_details.get()
+            all_values = myuser.taskboard
             if myuser == None:
                 myuser = MyUser(id=user.user_id())
                 myuser.email_address = user.email()
@@ -38,8 +40,8 @@ class taskBoard(webapp2.RequestHandler):
         else:
             url = users.create_login_url(self.request.uri)
             url_string = 'login'
+            self.redirect('/')
 
-        all_values = myuser.taskboard
         i = 0
         while i < len(all_values):
             taskboard_NameValue = ndb.Key('taskBoarddata', all_values[i]).get()
