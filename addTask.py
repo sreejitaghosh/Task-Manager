@@ -110,7 +110,7 @@ class addTask(webapp2.RequestHandler):
                 add_data.Date.append("Not Complete")
                 add_data.Time.append("Not Complete")
                 add_data.put()
-                self.redirect('/taskBoard')
+                self.redirect('/invite?taskBoarddata='+TaskBoardName+'&email='+OwnerName)
             else:
                 add_data = ndb.Key('taskdata',Unique).get()
                 add_data.Title.append(TaskNameFromUser)
@@ -120,7 +120,7 @@ class addTask(webapp2.RequestHandler):
                 add_data.Date.append("Not Complete")
                 add_data.Time.append("Not Complete")
                 add_data.put()
-                self.redirect('/taskBoard')
+                self.redirect('/invite?taskBoarddata='+TaskBoardName+'&email='+OwnerName)
 
         template_values = {
             'url' : url,

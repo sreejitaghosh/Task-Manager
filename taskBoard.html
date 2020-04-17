@@ -52,17 +52,28 @@
       </div>
       {% endif %}
       <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
-      <p>List Of Task Board</p>
-      {% for value in Value_data %}
+      <table>
         <tr>
-          <td>
-            <a href="/invite?taskBoarddata={{ value.taskBoarddata }}&email={{ value.owner }}">
-              Task Board Name : {{ value.taskBoarddata }}
-              <br>
-            </a>
+          <td style="border:1px solid black;padding:10px;">
+            <p>Taskboard Name</p>
+          </td>
+          <td style="border:1px solid black;padding:10px;">
+            <p>Creator Email Id</p>
           </td>
         </tr>
-      {% endfor %}
+        {% for value in Value_data %}
+          <tr>
+            <td style="border:1px solid black;padding:10px;">
+              <a href="/invite?taskBoarddata={{ value.taskBoarddata }}&email={{ value.owner }}">
+                {{ value.taskBoarddata }}
+              </a>
+            </td>
+            <td style="border:1px solid black;padding:10px;">
+              {{ value.owner }}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
       <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
     </div>
   </center>

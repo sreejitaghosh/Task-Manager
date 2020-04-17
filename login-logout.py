@@ -10,6 +10,9 @@ from taskBoard import taskBoard
 from addTask import addTask
 from addTaskBoard import addTaskBoard
 from invite import invite
+from editTask import editTask
+from AssignValue import AssignValue
+from CompleteIncomplete import CompleteIncomplete
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -57,5 +60,8 @@ app = webapp2.WSGIApplication([
     ('/taskBoard', taskBoard),
     ('/addTask', addTask),
     ('/addTaskBoard', addTaskBoard),
-    ('/invite', invite)
+    ('/invite', invite),
+    ('/editTask', editTask),
+    ('/AssignValue',AssignValue),
+    ('/CompleteIncomplete',CompleteIncomplete)
 ], debug=True)

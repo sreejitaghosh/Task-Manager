@@ -12,7 +12,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True
 )
 
-class invite(webapp2.RequestHandler):
+class editTask(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/html'
 
@@ -23,7 +23,6 @@ class invite(webapp2.RequestHandler):
         taskBoard_key = taskBoard+""+email
         user = users.get_current_user()
         available_email_id = []
-        length_task_data = 0
 
         if user:
             url = users.create_logout_url(self.request.uri)
@@ -53,11 +52,10 @@ class invite(webapp2.RequestHandler):
              'user' : user,
              'available_email_id' : available_email_id,
              'taskboard_data' : taskboard_data,
-             'task_data' : task_data,
-             'length_task_data' : length_task_data
+             'task_data' : task_data
         }
 
-        template = JINJA_ENVIRONMENT.get_template('invite.html')
+        template = JINJA_ENVIRONMENT.get_template('editTask.html')
         self.response.write(template.render(template_values))
 
     def post(self):
@@ -84,40 +82,14 @@ class invite(webapp2.RequestHandler):
             url_string = 'login'
             self.redirect('/')
 
-        call_tb = self.request.get('taskBoarddata')
-        call_user = self.request.get('email')
-        all_call = call_tb+""+call_user
-        user_select_email = self.request.get('select_email_id')
-        taskBoard_a = ndb.Key('taskBoarddata',all_call).get()
-
-        if taskBoard_a.owner == user.email():
-            section = False
-            new_myuser = ndb.Key('MyUser',user_select_email).get()
-
-            if new_myuser != None:
-                call = new_myuser.taskboard
-                i = 0
-                while i < len(call):
-                    if call[i] == all_call:
-                        section = True
-                        break
-                    else:
-                        section = False
-                        i = i + 1
-
-            if section == True:
-                self.redirect('/taskBoard')
-            else:
-                new_myuser.taskboard.append(all_call)
-                new_myuser.put()
-                taskBoard_a.email_address.append(user_select_email)
-                taskBoard_a.put()
-                self.redirect('/invite?taskBoarddata='+call_tb+'&email='+call_user)
-        else:
-            self.redirect('/taskBoard')
-
+        tb = self.request.get('taskBoarddata')
+        owner = self.request.get('email')
+        unique = tb+""+owner
+        select_task_owner = self.request.get('select_task_owner')
+        taskTitleName = self.request.get('taskTitleName')
+        ButtonOption = self.request.get('Button')
         available_email_id = MyUser.query().fetch()
-        taskboard_data = ndb.Key('taskBoarddata',all_call).get()
+        taskboard_data = ndb.Key('taskBoarddata',unique).get()
 
         template_values = {
             'url' : url,
@@ -131,5 +103,5 @@ class invite(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 app = webapp2.WSGIApplication([
-    ('/invite', invite)
+    ('/editTask',editTask),
 ], debug=True)

@@ -21,6 +21,12 @@
     border-top: 1px solid;
     border-bottom: 1px solid;
   }
+  .tasktable
+  {
+    border:1px solid red;
+    text-align:center;
+    padding:5px;
+  }
  </style>
 <body>
   <center>
@@ -56,45 +62,109 @@
         <p>You can Invite User by selecting from available list of email ids</p>
         <p>Task Board Name : {{taskboard_data.taskBoarddata}}</p>
         <p>TaskBoard Created By : {{taskboard_data.owner}}</p>
-        <select name="select_email_id">
-          <option value="">Select</option>
-          {% for value in available_email_id %}
-            <option value="{{ value.email_address }}">{{ value.email_address }}</option>
-          {% endfor %}
-        </select>
+        {% if user %}
+          <select name="select_email_id">
+            <option value="">Select</option>
+            {% for value in available_email_id %}
+              {% if value.email_address != user.email() %}
+                <option value="{{ value.email_address }}">{{ value.email_address }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        {% endif %}
         <tr>
           <td><input type="submit" value="Invite" id="inviteButton" name="submit"></td>
           <td><input type="reset" value="Reset" id="reset" name="Reset"></td>
         </tr>
-        <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
+        <br><hr style="height: 1px;color: red;background-color: red;border: none;">
       </form>
-      <p>List of Task</p>
-      <table>
-      {% for value in Value_task %}
-        <tr>
-          <td>
-            <a href="/invite?taskBoarddata={{ value.taskBoarddata }}&email={{ value.owner }}">
-              Task Name : {{ value.taskBoarddata }}
-              <br>
-            </a>
-          </td>
-        </tr>
-      {% endfor %}
-      <tr>
-        <td style="width:150px"><u><b>Title</b></u></td>
-        <td style="width:150px"><u><b>Due Date</b></u></td>
-        <td style="width:150px"><u><b>Task Completed</b></u></td>
-        <td style="width:150px"><u><b>Task Assigned To</b></u></td>
-        <td style="width:150px"><u><b>Date</b></u></td>
-        <td style="width:150px"><u><b>Time</b></u></td>
-      </tr>
-      <tr><td><br></td></tr>
-      <tr>
-        <td><input type="submit" name="Button" value="Edit"></td>
-        <td><input type="submit" name="Button" value="Delete"></td>
-      </tr>
-    </table>
-    <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
+      <center>
+        <div style="font-size:25px;">List of Task</div>
+        <br>
+          <table class="tasktable">
+          {% if task_data %}
+            <tr>
+              <td class="tasktable" colspan="2"><u><b>Select</b></u></td>
+              <td class="tasktable"><u><b>Title</b></u></td>
+              <td class="tasktable"><u><b>Due Date</b></u></td>
+              <td class="tasktable"><u><b>Task Completed</b></u></td>
+              <td class="tasktable"><u><b>Task Assigned To</b></u></td>
+              <td class="tasktable"><u><b>Date</b></u></td>
+              <td class="tasktable"><u><b>Time</b></u></td>
+            </tr>
+            <tr>
+              <td colspan="8"><br></td>
+            </tr>
+            {% for i in range(0,length_task_data) %}
+              {% if task_data.Task_assigned[i] == "Not Assigned" %}
+                <tr style="background:Red;">
+              {% else %}
+                <tr>
+              {% endif %}
+                  <td class="tasktable">
+                    <form action='/editTask?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}' method='post'>
+                      <button name='EditButton' value="{{ task_data.Title[i] }}">Edit</button>
+                    </form>
+                  </td>
+                  <td class="tasktable">
+                    <form action='/deleteTask?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}' method='post'>
+                      <button name='DeleteButton' value="{{ task_data.Title[i] }}">Delete</button>
+                    </form>
+                  </td>
+                  <td class="tasktable">
+                    {{ task_data.Title[i] }}
+                  </td>
+                  <td class="tasktable">{{ task_data.Due_Date[i] }}</td>
+                  <td class="tasktable">
+                    <form action='/CompleteIncomplete?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}' method='post'>
+                      {% if task_data.Task_Completion[i] == 'Not Complete' %}
+                        {{ task_data.Task_Completion[i] }}
+                        <button name="CompleteIncomplete" value="{{ task_data.Title[i] }}">Mark Complete</button>
+                      {% else %}
+                        {{ task_data.Task_Completion[i] }}
+                        <button name="CompleteIncomplete" value="{{ task_data.Title[i] }}">Mark Incomplete</button>
+                      {% endif %}
+                    </form>
+                  </td>
+                  <td class="tasktable">
+                    <form action='/AssignValue?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}' method='post'>
+                      {% if task_data.Task_assigned[i] == 'Not Assigned' %}
+                        <select name="select_task_owner">
+                          <option value="Not Assigned">Select</option>
+                          {% for value in taskboard_data.email_address %}
+                            <option value="{{ value }}">{{ value }}</option>
+                          {% endfor %}
+                        </select>
+                        <button name="Assign_Email" id="Assign_Email" value="{{ task_data.Title[i] }}">Assign</button>
+                      {% else %}
+                        <select name="select_task_owner">
+                          <option value="Not Assigned">Select</option>
+                          {% for value in taskboard_data.email_address %}
+                            {% if value == task_data.Task_assigned[i] %}
+                              <option value="{{ value }}" selected>{{ value }}</option>
+                            {% else %}
+                              <option value="{{ value }}">{{ value }}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                        <button name="Assign_Email" id="Assign_Email" value="{{ task_data.Title[i] }}">Assign</button>
+                      {% endif %}
+                    </form>
+                  </td>
+                  <td class="tasktable">{{ task_data.Date[i] }}</td>
+                  <td class="tasktable">{{ task_data.Time[i] }}</td>
+                </tr>
+                <tr>
+                  <td colspan="8"><br></td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              There are no tasks created yet.
+            {% endif %}
+          </table>
+        </form>
+      </center>
+      <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
     </div>
   </center>
 </body>
