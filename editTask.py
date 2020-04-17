@@ -47,6 +47,18 @@ class editTask(webapp2.RequestHandler):
             if task_data.Title[i] == taskTitle:
                 taskdata.append(task_data.Title[i])
                 taskdata.append(task_data.Due_Date[i])
+        editButtonValue = self.request.get('submit')
+
+        if editButtonValue == 'Edit':
+            TaskOldName = self.request.get('TaskOldName')
+            TaskNewName = self.request.get('TaskNewName')
+            TaskNewDue_Date = self.request.get('TaskNewDue_Date')
+            for i in range(0,len(task_data.Title)):
+                if task_data.Title[i] == TaskOldName:
+                    task_data.Title[i] = TaskNewName
+                    task_data.Due_Date[i] = TaskNewDue_Date
+                    task_data.put()
+                    self.redirect('/invite?taskBoarddata='+tb+'&email='+owner)
 
         template_values = {
             'url' : url,
