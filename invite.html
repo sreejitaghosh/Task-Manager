@@ -103,12 +103,12 @@
               {% endif %}
                   <td class="tasktable">
                     <form action='/editTask?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}' method='post'>
-                      <button name='EditButton' value="{{ task_data.Title[i] }}">Edit</button>
+                      <button name='EditButton' id="EditButton" value="{{ task_data.Title[i] }}">Edit</button>
                     </form>
                   </td>
                   <td class="tasktable">
                     <form action='/deleteTask?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}' method='post'>
-                      <button name='DeleteButton' value="{{ task_data.Title[i] }}">Delete</button>
+                      <button name='DeleteButton' id="DeleteButton" value="{{ task_data.Title[i] }}">Delete</button>
                     </form>
                   </td>
                   <td class="tasktable">
@@ -116,14 +116,17 @@
                   </td>
                   <td class="tasktable">{{ task_data.Due_Date[i] }}</td>
                   <td class="tasktable">
-                    <form action='/CompleteIncomplete?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}' method='post'>
-                      {% if task_data.Task_Completion[i] == 'Not Complete' %}
+                    {% if task_data.Task_Completion[i] == 'Not Complete' %}
+                      <form action='/Complete?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}' method='post'>
                         {{ task_data.Task_Completion[i] }}
-                        <button name="CompleteIncomplete" value="{{ task_data.Title[i] }}">Mark Complete</button>
-                      {% else %}
+                        <button name="CompleteButton" value="{{ task_data.Title[i] }}">Mark Complete</button>
+                      </form>
+                    {% else %}
+                      <form action='/Incomplete?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}' method='post'>
                         {{ task_data.Task_Completion[i] }}
-                        <button name="CompleteIncomplete" value="{{ task_data.Title[i] }}">Mark Incomplete</button>
-                      {% endif %}
+                        <button name="IncompleteButton" value="{{ task_data.Title[i] }}">Mark Incomplete</button>
+                      </form>
+                    {% endif %}
                     </form>
                   </td>
                   <td class="tasktable">

@@ -47,30 +47,27 @@
         <p>you can {{ url_string }} <a href='{{ url }}'>here</a></p>
       </div>
       {% else %}
-      <p>Welcome to the application </p>
-      <div class="nav">
-      </div>
-      {% endif %}
+      <p>Welcome to the application </p>{% endif %}
       <br>
       <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
-      <form action='/addTask?taskBoarddata={{ data.taskBoarddata }}&email={{ data.owner }}' method='post'>
+      <form action='/editTask?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}' method='post'>
         <table>
-          <caption><center>Create New Task</center></caption>
+          <caption><center>Edit Task</center></caption>
             <tr>
               <td><br></td>
             </tr>
             <tr>
-              <td>Name:</td>
-              <td><input type='text' name='TaskName' /required></td>
+              <td>Task Name:</td>
+              <td><input type='text' name='TaskName' value="{{ taskdata[0] }}" /required></td>
             </tr>
             <tr>
               <td>Due_Date:</td>
-              <td><input type='date' name='Due_Date' /required></td>
+              <td><input type='date' name='Due_Date' value="{{ taskdata[1] }}" /required></td>
             </tr>
             <tr><td><br></td></tr>
             <tr>
-              <td><input type="submit" value="Add" id="addButton" name="Add"></td>
-              <td><input type="reset" value="Reset" id="reset" name="Reset"></td>
+              <td><input type="submit" id="editButton" name="submit" value="Edit"></td>
+              <td><input type="reset"></td>
             </tr>
         </table>
       </form>

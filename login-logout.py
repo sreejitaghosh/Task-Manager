@@ -10,15 +10,16 @@ from taskBoard import taskBoard
 from addTask import addTask
 from addTaskBoard import addTaskBoard
 from invite import invite
-from editTask import editTask
 from AssignValue import AssignValue
-from CompleteIncomplete import CompleteIncomplete
+from Complete import Complete
+from Incomplete import Incomplete
+from editTask import editTask
+from DeleteTask import DeleteTask
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
-    autoescape=True
-)
+    autoescape=True)
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -56,12 +57,14 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
-    ('/taskBoard', taskBoard),
-    ('/addTask', addTask),
-    ('/addTaskBoard', addTaskBoard),
-    ('/invite', invite),
-    ('/editTask', editTask),
+    ('/',MainPage),
+    ('/taskBoard',taskBoard),
+    ('/addTask',addTask),
+    ('/addTaskBoard',addTaskBoard),
+    ('/invite',invite),
     ('/AssignValue',AssignValue),
-    ('/CompleteIncomplete',CompleteIncomplete)
+    ('/Complete',Complete),
+    ('/Incomplete',Incomplete),
+    ('/editTask',editTask),
+    ('/deleteTask',DeleteTask)
 ], debug=True)
