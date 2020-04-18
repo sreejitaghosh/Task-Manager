@@ -61,7 +61,20 @@
         <br><hr style="height: 1px;color: red;background-color: red;border: none;"><br>
         <p>You can Invite User by selecting from available list of email ids</p>
         <p>Task Board Name : {{taskboard_data.taskBoarddata}}</p>
+        <table>
+          <tr>
+            <td style="border:1px solid black;padding:10px;">
+              <input type="textbox" name="taskboard_NewName" placeholder="Enter taskboard's new name to rename this taskboard." style="width:400px;" /required>
+            </td>
+            <td style="border:1px solid black;padding:10px;">
+              <input type="submit" name="submit" value="Rename">
+            </td>
+          </tr>
+        </table>
+        <br>
         <p>TaskBoard Created By : {{taskboard_data.owner}}</p>
+      </form>
+      <form method='post' action='/invite?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}'>
         {% if user %}
           <select name="select_email_id">
             <option value="">Select</option>
@@ -74,10 +87,26 @@
         {% endif %}
         <tr>
           <td><input type="submit" value="Invite" id="inviteButton" name="submit"></td>
-          <td><input type="reset" value="Reset" id="reset" name="Reset"></td>
+          <td><input type="reset" value="Reset"></td>
         </tr>
-        <br><hr style="height: 1px;color: red;background-color: red;border: none;">
       </form>
+      <form method='post' action='/invite?taskBoarddata={{ taskboard_data.taskBoarddata }}&email={{ taskboard_data.owner }}'>
+        {% if user %}
+          <select name="select_to_remove_email_id">
+            <option value="">Select</option>
+            {% for value in assigned_users %}
+              {% if value != taskboard_data.owner %}
+                <option value="{{ value }}">{{ value }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        {% endif %}
+        <tr>
+          <td><input type="submit" value="Remove" name="submit"></td>
+          <td><input type="reset" value="Reset"></td>
+        </tr>
+      </form>
+      <br><hr style="height: 1px;color: red;background-color: red;border: none;">
       <center>
         <div style="font-size:25px;">List of Task</div>
         <br>

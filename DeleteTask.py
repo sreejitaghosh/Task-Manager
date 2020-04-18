@@ -27,6 +27,9 @@ class DeleteTask(webapp2.RequestHandler):
                     del taskdata.Time[i]
                     taskdata.put()
                     self.redirect('/invite?taskBoarddata='+taskboardName+'&email='+email)
+                    break
+                else:
+                    self.redirect('/invite?taskBoarddata='+taskboardName+'&email='+email)
         else:
             taskdata.key.delete()
             self.redirect('/invite?taskBoarddata='+taskboardName+'&email='+email)
